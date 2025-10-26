@@ -64,6 +64,17 @@ To get the latest updates whenever I make a commit, run:
 git pull
 ```
 
+## How to Use
+
+Running the dev server will host it on http://localhost:5173/
+
+Currently, there are only two routes:
+
+- /
+- /login
+
+'/' just redirects you to '/login' temporarily.
+
 ## Available Scripts
 
 - `npm run dev` - Start development server
