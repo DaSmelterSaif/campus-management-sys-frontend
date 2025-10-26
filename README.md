@@ -2,7 +2,7 @@
 
 A Vue.js-based frontend application for the Campus Management System.
 
-## Preequisites
+## Prerequisites
 
 Before running this project, ensure you have the following installed:
 
