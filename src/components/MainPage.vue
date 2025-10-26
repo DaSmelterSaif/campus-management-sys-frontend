@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO - Rename to Dashboard -->
     <RoomBooking class="w-100 h-30 p-4 bg-amber-300 rounded-2xl" />
 </template>
 

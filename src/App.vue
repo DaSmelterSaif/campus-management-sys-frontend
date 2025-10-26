@@ -1,14 +1,12 @@
 <template>
-    <MainPage class="m-10" />
+    <RouterView />
 </template>
 
 <script>
-import MainPage from './components/MainPage.vue';
-
 export default {
-    components: {
-        MainPage
-    }
+    data() {
+        return {}
+    },
 }
 </script>
 

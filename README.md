@@ -56,6 +56,14 @@ npm install
 npm run dev
 ```
 
+## Get Updates
+
+To get the latest updates whenever I make a commit, run:
+
+```bash
+git pull
+```
+
 ## Available Scripts
 
 - `npm run dev` - Start development server
