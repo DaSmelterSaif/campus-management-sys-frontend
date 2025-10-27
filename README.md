@@ -22,7 +22,7 @@ git --version
 
 ### 1. Clone the Repository
 
-To run this project on your windows system, open up a terminal and clone it to a
+To run this project on your system, open up a terminal and clone it to a
 directory of your choice:
 
 **Windows:**
@@ -66,7 +66,7 @@ git pull
 
 ## How to Use
 
-Running the dev server will host it on http://localhost:5173/
+Running the dev server will host the app on http://localhost:5173/
 
 Currently, there are only two routes:
 
