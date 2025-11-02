@@ -68,12 +68,19 @@ git pull
 
 Running the dev server will host the app on http://localhost:5173/
 
-Currently, there are only two routes:
+There are a number of routes in the [routes](#routes) to navigate the app.
+
+### Routes
 
 - /
-- /login
+- /auth
+- /auth/login
+- /auth/register
 
-'/' just redirects you to '/login' temporarily.
+Notes:
+
+- '/' just redirects you to '/auth/login' temporarily.
+- '/auth' is not supposed to work and is a bug for now.
 
 ## Available Scripts
 
