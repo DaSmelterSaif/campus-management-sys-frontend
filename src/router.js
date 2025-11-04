@@ -4,6 +4,7 @@ import Redirector from "./components/Redirector.vue";
 import Auth from "./components/Auth.vue";
 import Login from "./components/Auth_components/Login.vue";
 import Register from "./components/Auth_components/Register.vue";
+import Dashboard from "./components/Dashboard.vue";
 
 const routes = [
   { path: "/", component: Redirector },
@@ -21,6 +22,7 @@ const routes = [
       },
     ],
   },
+  { path: "/dashboard", component: Dashboard },
 ];
 
 const router = createRouter({

@@ -76,11 +76,13 @@ There are a number of routes in the [routes](#routes) to navigate the app.
 - /auth
 - /auth/login
 - /auth/register
+- /dashboard
 
 Notes:
 
 - '/' just redirects you to '/auth/login' temporarily.
 - '/auth' is not supposed to work and is a bug for now.
+- '/dashboard' should only work when signed in
 
 ## Available Scripts
 

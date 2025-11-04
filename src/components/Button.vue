@@ -1,5 +1,8 @@
 <template>
-    <button class="bg-primary hover:bg-hovered-btn transition-colors rounded-xl">{{ btnWord }}</button>
+    <button
+        class="bg-primary hover:bg-hovered-btn active:bg-clicked-btn text-white select-none transition-colors rounded-xl">{{
+            btnWord
+        }}</button>
 </template>
 
 <script>

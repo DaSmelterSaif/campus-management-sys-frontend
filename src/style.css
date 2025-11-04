@@ -4,6 +4,8 @@
 @theme {
   --color-beige: #ede8d0;
   --color-primary: #57caff;
+  --color-muted: #8adaff;
+  --color-clicked-btn: #00a4f0;
   --color-hovered-btn: #24baff;
 
   --font-inter: "Inter", sans-serif;
