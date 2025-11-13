@@ -89,3 +89,84 @@ Notes:
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build locally
+
+## Documentation
+
+**Note:** This is Saif's first attempt at a documentation. It may be incomplete,
+or includes parts in other sections in this README file that are to be moved
+in the near future.
+
+Each service that is sent to the backend has an "internal" service ID.
+This ID is passed through components through the URL (route '/form/:id') to determine
+which backend URL to choose from. The following list shows all service IDs
+along with their corresponding services and backend routes:
+
+- **Room Booking**  
+  Service ID: 1  
+  Backend Route: '/bookroom'  
+  Role: Student, Faculty
+
+- **Schedule Events**  
+  Service ID: 2  
+  Backend Route: '/scheduleevents'  
+  Role: Student, Faculty
+
+- **Register/Dismiss Event**  
+  Service ID: 3  
+  Backend Route: '/registerevent'  
+  Role: Student
+
+- **Cancel Event**  
+  Service ID: 4  
+  Backend Route: '/cancelevent'  
+  Role: Student, Admin, Faculty
+
+- **Cancel Booking**  
+  Service ID: 5  
+  Backend Route: '/cancelbooking'  
+  Role:
+
+- **Submit Maintenance Request**  
+  Service ID: 6  
+  Backend Route: '/maintenancerequest'  
+  Role:
+
+- **View Maintenance Status**  
+  Service ID: 7  
+  Backend Route: '/viewmaintenance'  
+  Role:
+
+- **Ask Chatbot**  
+  Service ID: 8  
+  Backend Route: '/askchatbot'  
+  Role:
+
+- **Approve/Reject Booking**  
+  Service ID: 9  
+  Backend Route: '/approverejectbooking'  
+  Role:
+
+- **View Energy and Water Consumption**  
+  Service ID: 10  
+  Backend Route: '/energywaterreport'  
+  Role:
+
+- **Predict Future Resourse Demands**  
+  Service ID: 11  
+  Backend Route: '/predictenergywater'  
+  Role:
+
+- **View Student Feedback**  
+  Service ID: 12  
+  Backend Route: '/predictenergywater'  
+  Role:
+
+- **Summarize Student Feedback**  
+  Service ID: 13  
+  Backend Route: '/summarizestudentfeedback'  
+  Role:
+
+- **Update Maintenance Status**  
+  Service ID: 14  
+  Backend Route: '/updatemaintenancestatus'  
+  Role:

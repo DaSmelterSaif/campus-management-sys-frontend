@@ -26,128 +26,128 @@ const IP_BY_ROLE = {
         {
             id: 1,
             name: "Room Booking",
-            ip: "form/bookroom"
+            ip: "form/1"
         },
         {
             id: 2,
             name: "Schedule Events",
-            ip: "form/scheduleevents"
+            ip: "form/2"
         },
         {
             id: 3,
             name: "Register/Dismiss Event",
-            ip: "form/registerevent"
+            ip: "form/3"
         },
         {
             id: 4,
             name: "Cancel Event",
-            ip: "form/cancelevent"
+            ip: "form/4"
         },
         {
             id: 5,
             name: "Cancel Booking",
-            ip: "form/cancelbooking"
+            ip: "form/5"
         },
         {
             id: 6,
             name: "Submit Maintenance Request",
-            ip: "form/maintenancerequest"
+            ip: "form/6"
         },
         {
             id: 7,
             name: "View Maintenance Status",
-            ip: "form/viewmaintenance"
+            ip: "form/7"
         },
         {
             id: 8,
             name: "Ask Chatbot",
-            ip: "form/askchatbot"
+            ip: "form/8"
         }
     ],
     admin: [
         {
             id: 9,
             name: "Approve/Reject Booking",
-            ip: "form/approverejectbooking"
+            ip: "form/9"
         },
         {
             id: 10,
             name: "Cancel Event",
-            ip: "form/cancelevent"
+            ip: "form/4"
         },
         {
             id: 11,
             name: "Cancel Booking",
-            ip: "form/cancelbooking"
+            ip: "form/5"
         },
         {
             id: 12,
             name: "View Energy and Water Consumption",
-            ip: "form/energywaterreport"
+            ip: "form/10"
         },
         {
             id: 13,
             name: "Predict Future Resourse Demands",
-            ip: "form/predictenergywater"
+            ip: "form/11"
         },
         {
             id: 14,
             name: "View Student Feedback",
-            ip: "form/getstudentfeedback"
+            ip: "form/12"
         },
         {
             id: 15,
             name: "Summarize Student Feedback",
-            ip: "form/summarizestudentfeedback"
+            ip: "form/13"
         }
     ],
     faculty: [
         {
             id: 16,
             name: "Room Booking",
-            ip: "form/bookroom"
+            ip: "form/1"
         },
         {
             id: 17,
             name: "Schedule Events",
-            ip: "form/scheduleevents"
+            ip: "form/2"
         },
         {
             id: 18,
             name: "Cancel Event",
-            ip: "form/cancelevent"
+            ip: "form/4"
         },
         {
             id: 19,
             name: "Cancel Booking",
-            ip: "form/cancelbooking"
+            ip: "form/5"
         },
         {
             id: 20,
             name: "Submit Maintenance Request",
-            ip: "form/maintenancerequest"
+            ip: "form/6"
         },
         {
             id: 21,
             name: "View Maintenance Status",
-            ip: "form/viewmaintenance"
+            ip: "form/7"
         },
         {
             id: 22,
             name: "View Student Feedback",
-            ip: "form/getstudentfeedback"
+            ip: "form/12"
         },
         {
             id: 23,
             name: "Summarize Student Feedback",
-            ip: "form/summarizestudentfeedback"
+            ip: "form/13"
         }
     ],
     maintenance: [
         {
             id: 24,
             name: "Update Maintenance Status",
-            ip: "form/updatemaintenancestatus"
+            ip: "form/14"
         }
     ]
 };
