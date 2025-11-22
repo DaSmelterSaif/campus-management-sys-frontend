@@ -1,0 +1,142 @@
+<template>
+    <!-- Form submission handler: @submit.prevent prevents page reload -->
+    <form class="space-y-6" @submit.prevent="handleSubmit">
+        <!-- Loop through each field definition in schema.fields -->
+        <div v-for="(field, idx) in schema.fields" :key="idx" class="flex flex-col">
+            <label :for="field.key" class="mb-1 font-medium">
+                {{ field.label }} <span v-if="field.required" class="text-red-600">*</span>
+            </label>
+
+            <!-- Render text/number/email/date/time inputs: checks if field.type matches any in the array -->
+            <input v-if="['text', 'number', 'email', 'date', 'time'].includes(field.type)" :id="field.key"
+                class="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                v-model="form[field.key]" :type="field.type" :placeholder="field.placeholder || ''"
+                :required="field.required" />
+
+            <!-- Textarea -->
+            <textarea v-else-if="field.type === 'textarea'" :id="field.key"
+                class="px-3 py-2 rounded-md border border-gray-300 min-h-[100px] focus:outline-none focus:ring-2 focus:ring-primary"
+                v-model="form[field.key]" :placeholder="field.placeholder || ''" :required="field.required" />
+
+            <!-- Select dropdown: renders options from field.options array -->
+            <select v-else-if="field.type === 'select'" :id="field.key"
+                class="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                v-model="form[field.key]" :required="field.required">
+                <option disabled value="">{{ field.placeholder || 'Select…' }}</option>
+                <!-- Handle both simple strings and objects: opt.value || opt catches both formats -->
+                <option v-for="opt in field.options || []" :key="opt.value || opt" :value="opt.value || opt">
+                    {{ opt.label || opt }}
+                </option>
+            </select>
+
+            <!-- Checkbox: boolean value stored in form[field.key] -->
+            <div v-else-if="field.type === 'checkbox'" class="flex items-center gap-3">
+                <input type="checkbox" :id="field.key" v-model="form[field.key]" />
+                <span class="text-sm">{{ field.description }}</span>
+            </div>
+
+            <!-- Fallback for unknown types -->
+            <input v-else :id="field.key"
+                class="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                v-model="form[field.key]" :placeholder="field.placeholder || ''" />
+
+            <!-- Display validation errors for this field -->
+            <p v-if="errors[field.key]" class="text-sm text-red-600 mt-1">{{ errors[field.key] }}</p>
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+            <slot name="left-actions" />
+            <button type="submit"
+                class="bg-primary hover:bg-hovered-btn active:bg-clicked-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
+                {{ submitLabel || 'Submit' }}
+            </button>
+        </div>
+    </form>
+</template>
+
+<script>
+export default {
+    name: "FormBuilder",
+    props: {
+        schema: { type: Object, required: true },
+        submitUrl: { type: String, default: "" },
+        method: { type: String, default: "POST" },
+        accessToken: { type: String, default: "" },
+        submitLabel: { type: String, default: "Submit" }
+    },
+    emits: ["submitted", "error"],
+    data() {
+        // Initialize form object: map each field.key to its default value (or empty string)
+        const initial = {};
+        (Array.isArray(this.schema.fields) ? this.schema.fields : []).forEach(f => {
+            // Checkboxes start as false, others as empty string
+            if (f.type === "checkbox") initial[f.key] = !!f.default;
+            else if (f.type === "select") initial[f.key] = f.default ?? "";
+            else initial[f.key] = f.default ?? "";
+        });
+        return { form: initial, errors: {} };
+    },
+    methods: {
+        // Validate form before submission: check required fields and email format
+        validate() {
+            const errs = {};
+            for (const f of this.schema.fields) {
+                const v = this.form[f.key];
+                // Check if required field is empty (handles "", null, undefined, and whitespace)
+                if (f.required && (v === "" || v === null || v === undefined || (typeof v === 'string' && v.trim() === ''))) {
+                    errs[f.key] = "This field is required.";
+                    continue;
+                }
+                // Email validation: basic regex check
+                if (f.type === 'email' && v) {
+                    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+                    if (!ok) errs[f.key] = "Please enter a valid email.";
+                }
+                // Number min/max constraints
+                if (f.min && typeof v === 'number' && v < f.min) errs[f.key] = `Minimum is ${f.min}.`;
+                if (f.max && typeof v === 'number' && v > f.max) errs[f.key] = `Maximum is ${f.max}.`;
+            }
+            this.errors = errs;
+            return Object.keys(errs).length === 0; // true if no errors
+        },
+        async handleSubmit() {
+            // Prevent submission if validation fails
+            if (!this.validate()) {
+                this.$emit('error', { type: 'validation', errors: this.errors });
+                return;
+            }
+            // Merge form data with static metadata (if provided in schema.meta.static)
+            const payload = { ...this.form, ...(this.schema.meta?.static || {}) };
+
+            try {
+                // If no submitUrl, just emit the form data (let parent handle submission)
+                if (!this.submitUrl) {
+                    this.$emit('submitted', payload);
+                    return;
+                }
+                // Send form data to backend
+                const res = await fetch(this.submitUrl, {
+                    method: this.method || "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Add auth token if provided
+                        ...(this.accessToken ? { 'Authorization': `Bearer ${this.accessToken}` } : {})
+                    },
+                    body: JSON.stringify(payload)
+                });
+                // Try parsing response as JSON, fallback to empty object if not JSON
+                const data = await res.json().catch(() => ({}));
+                // Throw error if response status is not ok
+                if (!res.ok) throw new Error(data?.message || res.statusText);
+                // Emit success with response data
+                this.$emit('submitted', { payload, response: data });
+            } catch (e) {
+                // Emit error if network or response fails
+                this.$emit('error', { type: 'network', message: e.message });
+            }
+        }
+    }
+};
+</script>
+
+<style scoped></style>

@@ -2,8 +2,11 @@
     <div class="h-screen flex justify-center items-start bg-linear-180 from-39% from-white to-100% to-slate-200">
         <div class="w-[750px] min-h-[95vh] p-14 pb-6 bg-blue-200 rounded-md overflow-hidden shadow-lg">
             <h1 class="mb-12 text-5xl font-semibold">{{ BACKEND_IP_BY_SERVICE_ID[serviceId].name }}</h1>
-            {{ BACKEND_IP_BY_SERVICE_ID[serviceId].ip }}
-        </div>
+   
+            <form @submit.prevent="submitForm">
+                CKEND_IP_BY_SERVICE_ID[serviceId].ip }}
+   
+            </form>     </div>
     </div>
 </template>
 
@@ -13,7 +16,8 @@ export default {
     data() {
         return {
             serviceId: this.$route.params.serviceId,
-            BACKEND_IP_BY_SERVICE_ID: {
+   
+            formData: "",         BACKEND_IP_BY_SERVICE_ID: {
                 1: { name: "Room Booking", ip: "http://localhost:8080/bookroom" },
                 2: { name: "Schedule Events", ip: "http://localhost:8080/scheduleevents" },
                 3: { name: "Register/Dismiss Event", ip: "http://localhost:8080/registerevent" },
@@ -31,7 +35,26 @@ export default {
             },
         }
     },
-    created() {
+   
+    methods: {
+        async submitForm() {
+            const IP = this.BACKEND_IP_BY_SERVICE_ID[this.serviceId].ip;
+
+            try {
+                const res = await fetch(IP, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ data: this.formData }),
+                    credentials: "include"
+                });
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            }
+            catch (e) {
+                this.error = e.message || "Failed to submit form";
+            }
+        }
+    }, created() {
         this.$watch(
             () => this.$route.params.serviceId,
             (newId) => {
