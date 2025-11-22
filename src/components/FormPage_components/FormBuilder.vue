@@ -1,6 +1,6 @@
 <template>
     <!-- Form submission handler: @submit.prevent prevents page reload -->
-    <form class="space-y-6" @submit.prevent="handleSubmit">
+    <form v-if="schema && schema.fields" class="space-y-6" @submit.prevent="handleSubmit">
         <!-- Loop through each field definition in schema.fields -->
         <div v-for="(field, idx) in schema.fields" :key="idx" class="flex flex-col">
             <label :for="field.key" class="mb-1 font-medium">

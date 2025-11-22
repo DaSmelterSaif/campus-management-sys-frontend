@@ -2,65 +2,228 @@
     <div class="h-screen flex justify-center items-start bg-linear-180 from-39% from-white to-100% to-slate-200">
         <div class="w-[750px] min-h-[95vh] p-14 pb-6 bg-blue-200 rounded-md overflow-hidden shadow-lg">
             <h1 class="mb-12 text-5xl font-semibold">{{ BACKEND_IP_BY_SERVICE_ID[serviceId].name }}</h1>
-   
-            <form @submit.prevent="submitForm">
-                CKEND_IP_BY_SERVICE_ID[serviceId].ip }}
-   
-            </form>     </div>
+            <FormBuilder :schema="service.schema" :submit-url="service.ip" />
+            {{ BACKEND_IP_BY_SERVICE_ID[serviceId].ip }}
+        </div>
     </div>
 </template>
 
 <script>
+import FormBuilder from './FormPage_components/FormBuilder.vue';
 
 export default {
     data() {
+        const BACKEND_IP_BY_SERVICE_ID = {
+                1: {
+                    name: "Room Booking",
+                    ip: "http://localhost:8080/bookroom",
+                    schema: {
+                        fields: [
+                            { key: "roomId", label: "Room", type: "text", placeholder: "e.g. A-101", required: true },
+                            { key: "date", label: "Date", type: "date", required: true },
+                            { key: "startTime", label: "Start Time", type: "time", required: true },
+                            { key: "endTime", label: "End Time", type: "time", required: true },
+                            { key: "purpose", label: "Purpose", type: "textarea", placeholder: "What is this booking for?" },
+                            { key: "attendees", label: "Expected Attendees", type: "number", min: 1, default: 1 }
+                        ]
+                    }
+                },
+
+                2: {
+                    name: "Schedule Events",
+                    ip: "http://localhost:8080/scheduleevents",
+                    schema: {
+                        fields: [
+                            { key: "title", label: "Title", type: "text", required: true },
+                            { key: "date", label: "Date", type: "date", required: true },
+                            { key: "startTime", label: "Start Time", type: "time", required: true },
+                            { key: "endTime", label: "End Time", type: "time", required: true },
+                            { key: "location", label: "Location", type: "text", required: true },
+                            { key: "capacity", label: "Capacity", type: "number" },
+                            { key: "description", label: "Description", type: "textarea" }
+                        ]
+                    }
+                },
+
+                3: {
+                    name: "Register/Dismiss Event",
+                    ip: "http://localhost:8080/registerevent",
+                    schema: {
+                        fields: [
+                            { key: "eventId", label: "Event ID", type: "text", required: true },
+                            {
+                                key: "action", label: "Action", type: "select", required: true,
+                                options: [
+                                    { value: "register", label: "Register" },
+                                    { value: "cancel", label: "Cancel RSVP" }
+                                ],
+                                default: "register"
+                            }
+                        ]
+                    }
+                },
+
+                4: {
+                    name: "Cancel Event",
+                    ip: "http://localhost:8080/cancelevent",
+                    schema: {
+                        fields: [
+                            { key: "eventId", label: "Event ID", type: "text", required: true },
+                            { key: "reason", label: "Reason", type: "textarea" }
+                        ]
+                    }
+                },
+
+                5: {
+                    name: "Cancel Booking",
+                    ip: "http://localhost:8080/cancelbooking",
+                    schema: {
+                        fields: [
+                            { key: "bookingId", label: "Booking ID", type: "text", required: true },
+                            { key: "reason", label: "Reason", type: "textarea" }
+                        ]
+                    }
+                },
+
+                6: {
+                    name: "Submit Maintenance Request",
+                    ip: "http://localhost:8080/maintenancerequest",
+                    schema: {
+                        fields: [
+                            { key: "location", label: "Location", type: "text", placeholder: "Building/Room", required: true },
+                            {
+                                key: "category", label: "Category", type: "select", required: true,
+                                options: [
+                                    { value: "electrical", label: "Electrical" },
+                                    { value: "plumbing", label: "Plumbing" },
+                                    { value: "hvac", label: "HVAC" },
+                                    { value: "other", label: "Other" }
+                                ]
+                            },
+                            { key: "description", label: "Description", type: "textarea", required: true },
+                            { key: "priority", label: "Priority", type: "select", options: ["low", "medium", "high"], default: "medium" },
+                            { key: "contactEmail", label: "Contact Email", type: "email", required: true }
+                        ]
+                    }
+                },
+
+                7: {
+                    name: "View Maintenance Status",
+                    ip: "http://localhost:8080/viewmaintenance",
+                    schema: {
+                        fields: [
+                            { key: "ticketId", label: "Ticket ID", type: "text", required: true }
+                        ]
+                    }
+                },
+
+                8: {
+                    name: "Ask Chatbot",
+                    ip: "http://localhost:8080/askchatbot",
+                    schema: {
+                        fields: [
+                            {
+                                key: "mode", label: "Mode", type: "select", required: true,
+                                options: [
+                                    { value: "query", label: "Question" },
+                                    { value: "quickAction", label: "Quick Action" }
+                                ],
+                                default: "query"
+                            },
+                            { key: "prompt", label: "Your question or instruction", type: "textarea", required: true },
+                            { key: "keywords", label: "Keywords (optional)", type: "text", placeholder: "comma-separated" }
+                        ]
+                    }
+                },
+
+                9: {
+                    name: "Approve/Reject Booking",
+                    ip: "http://localhost:8080/approverejectbooking",
+                    schema: {
+                        fields: [
+                            { key: "bookingId", label: "Booking ID", type: "text", required: true },
+                            {
+                                key: "decision", label: "Decision", type: "select", required: true,
+                                options: [
+                                    { value: "approve", label: "Approve" },
+                                    { value: "reject", label: "Reject" }
+                                ]
+                            },
+                            { key: "note", label: "Note", type: "textarea", placeholder: "Optional comment to requester" }
+                        ]
+                    }
+                },
+
+                // 10 & 11 intentionally excluded
+
+                12: {
+                    name: "View Student Feedback",
+                    ip: "http://localhost:8080/getstudentfeedback",
+                    schema: {
+                        fields: [
+                            { key: "keyword", label: "Keyword", type: "text", placeholder: "Filter by word/phrase" },
+                            { key: "fromDate", label: "From Date", type: "date" },
+                            { key: "toDate", label: "To Date", type: "date" }
+                        ]
+                    }
+                },
+
+                13: {
+                    name: "Summarize Student Feedback",
+                    ip: "http://localhost:8080/summarizestudentfeedback",
+                    schema: {
+                        fields: [
+                            { key: "fromDate", label: "From Date", type: "date" },
+                            { key: "toDate", label: "To Date", type: "date" },
+                            {
+                                key: "summaryType", label: "Summary Type", type: "select",
+                                options: [
+                                    { value: "themes", label: "Key Themes" },
+                                    { value: "sentiment", label: "Sentiment" },
+                                    { value: "both", label: "Themes + Sentiment" }
+                                ],
+                                default: "both"
+                            }
+                        ]
+                    }
+                },
+
+                14: {
+                    name: "Update Maintenance Status",
+                    ip: "http://localhost:8080/updatemaintenancestatus",
+                    schema: {
+                        fields: [
+                            { key: "ticketId", label: "Ticket ID", type: "text", required: true },
+                            {
+                                key: "status", label: "Status", type: "select", required: true,
+                                options: [
+                                    { value: "open", label: "Open" },
+                                    { value: "in_progress", label: "In Progress" },
+                                    { value: "completed", label: "Completed" },
+                                    { value: "closed", label: "Closed" }
+                                ]
+                            },
+                            { key: "updateNote", label: "Update Note", type: "textarea", placeholder: "What changed?" }
+                        ]
+                    }
+                }
+            };
         return {
             serviceId: this.$route.params.serviceId,
-   
-            formData: "",         BACKEND_IP_BY_SERVICE_ID: {
-                1: { name: "Room Booking", ip: "http://localhost:8080/bookroom" },
-                2: { name: "Schedule Events", ip: "http://localhost:8080/scheduleevents" },
-                3: { name: "Register/Dismiss Event", ip: "http://localhost:8080/registerevent" },
-                4: { name: "Cancel Event", ip: "http://localhost:8080/cancelevent" },
-                5: { name: "Cancel Booking", ip: "http://localhost:8080/cancelbooking" },
-                6: { name: "Submit Maintenance Request", ip: "http://localhost:8080/maintenancerequest" },
-                7: { name: "View Maintenance Status", ip: "http://localhost:8080/viewmaintenance" },
-                8: { name: "Ask Chatbot", ip: "http://localhost:8080/askchatbot" },
-                9: { name: "Approve/Reject Booking", ip: "http://localhost:8080/approverejectbooking" },
-                10: { name: "View Energy and Water Consumption", ip: "http://localhost:8080/energywaterreport" },
-                11: { name: "Predict Future Resourse Demands", ip: "http://localhost:8080/predictenergywater" },
-                12: { name: "View Student Feedback", ip: "http://localhost:8080/getstudentfeedback" },
-                13: { name: "Summarize Student Feedback", ip: "http://localhost:8080/summarizestudentfeedback" },
-                14: { name: "Update Maintenance Status", ip: "http://localhost:8080/updatemaintenancestatus" }
-            },
-        }
+            service: BACKEND_IP_BY_SERVICE_ID[this.$route.params.serviceId],
+            BACKEND_IP_BY_SERVICE_ID,
+        };
     },
-   
-    methods: {
-        async submitForm() {
-            const IP = this.BACKEND_IP_BY_SERVICE_ID[this.serviceId].ip;
-
-            try {
-                const res = await fetch(IP, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ data: this.formData }),
-                    credentials: "include"
-                });
-
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            }
-            catch (e) {
-                this.error = e.message || "Failed to submit form";
-            }
-        }
-    }, created() {
+    created() {
         this.$watch(
             () => this.$route.params.serviceId,
             (newId) => {
                 this.serviceId = newId;
             }
         )
+    },
+    components: {
+        FormBuilder
     }
 }
 </script>
