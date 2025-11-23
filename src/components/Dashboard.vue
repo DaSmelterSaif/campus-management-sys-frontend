@@ -80,16 +80,16 @@ const IP_BY_ROLE = {
             name: "Cancel Booking",
             ip: "form/5"
         },
-        {
-            id: 12,
-            name: "View Energy and Water Consumption",
-            ip: "form/10"
-        },
-        {
-            id: 13,
-            name: "Predict Future Resourse Demands",
-            ip: "form/11"
-        },
+        // {
+        //     id: 12,
+        //     name: "View Energy and Water Consumption",
+        //     ip: "form/10"
+        // },
+        // {
+        //     id: 13,
+        //     name: "Predict Future Resourse Demands",
+        //     ip: "form/11"
+        // },
         {
             id: 14,
             name: "View Student Feedback",
