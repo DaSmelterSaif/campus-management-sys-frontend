@@ -113,7 +113,7 @@ export default {
                 ip: "http://localhost:8080/viewmaintenance",
                 schema: {
                     fields: [
-                        { key: "ticketId", label: "Ticket ID", type: "text", required: true }
+                        { key: "requestId", label: "Request ID", type: "text", required: true }
                     ]
                 }
             },

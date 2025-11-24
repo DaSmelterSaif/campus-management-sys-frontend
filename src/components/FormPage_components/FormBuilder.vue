@@ -52,9 +52,14 @@
             </button>
         </div>
     </form>
+
+    <!-- Response Modal -->
+    <ResponseModal :data="responseData" :isOpen="showModal" @close="showModal = false" />
 </template>
 
 <script>
+import ResponseModal from './ResponseModal.vue';
+
 export default {
     name: "FormBuilder",
     props: {
@@ -74,7 +79,7 @@ export default {
             else if (f.type === "select") initial[f.key] = f.default ?? "";
             else initial[f.key] = f.default ?? "";
         });
-        return { form: initial, errors: {} };
+        return { form: initial, errors: {}, showModal: false, responseData: null };
     },
     methods: {
         // Validate form before submission: check required fields and email format
@@ -131,11 +136,17 @@ export default {
                 if (!res.ok) throw new Error(data?.message || res.statusText);
                 // Emit success with response data
                 this.$emit('submitted', { payload, response: data });
+                // Show modal with response
+                this.responseData = data;
+                this.showModal = true;
             } catch (e) {
                 // Emit error if network or response fails
                 this.$emit('error', { type: 'network', message: e.message });
             }
         }
+    },
+    components: {
+        ResponseModal
     }
 };
 </script>
