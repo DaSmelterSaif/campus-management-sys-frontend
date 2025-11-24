@@ -10,7 +10,7 @@
             <!-- Services -->
             <div class="grid grid-cols-3 gap-8 justify-items-center">
                 <ServiceCard v-for="service in services" :key="service.id" btn-word="Submit" :service-ip="service.ip"
-                    :service-description="service.description">
+                    :service-description="service.description" :disabled="service.disabled || false">
                     {{ service.name }}
                 </ServiceCard>
             </div>
@@ -52,7 +52,8 @@ const IP_BY_ROLE = {
             id: 5,
             name: "Cancel Booking",
             description: "Cancel your room bookings",
-            ip: "form/5"
+            ip: "form/5",
+            disabled: true
         },
         {
             id: 6,
@@ -70,7 +71,8 @@ const IP_BY_ROLE = {
             id: 8,
             name: "Ask Chatbot",
             description: "Get instant answers from our AI assistant",
-            ip: "form/8"
+            ip: "form/8",
+            disabled: true
         }
     ],
     admin: [
@@ -106,13 +108,15 @@ const IP_BY_ROLE = {
             id: 14,
             name: "View Student Feedback",
             description: "Read feedback from students",
-            ip: "form/12"
+            ip: "form/12",
+            disabled: true
         },
         {
             id: 15,
             name: "Summarize Student Feedback",
             description: "Generate feedback summaries and insights",
-            ip: "form/13"
+            ip: "form/13",
+            disabled: true
         }
     ],
     faculty: [
@@ -138,7 +142,8 @@ const IP_BY_ROLE = {
             id: 19,
             name: "Cancel Booking",
             description: "Cancel your room bookings",
-            ip: "form/5"
+            ip: "form/5",
+            disabled: true
         },
         {
             id: 20,
@@ -156,13 +161,15 @@ const IP_BY_ROLE = {
             id: 22,
             name: "View Student Feedback",
             description: "Read feedback from students",
-            ip: "form/12"
+            ip: "form/12",
+            disabled: true
         },
         {
             id: 23,
             name: "Summarize Student Feedback",
             description: "Generate feedback summaries and insights",
-            ip: "form/13"
+            ip: "form/13",
+            disabled: true
         }
     ],
     maintenance: [
@@ -177,9 +184,10 @@ const IP_BY_ROLE = {
 
 export default {
     data() {
+        const role = localStorage.getItem('role') || "student";
         return {
             name: localStorage.getItem('name') || "John Doe",
-            services: IP_BY_ROLE["student"],
+            services: IP_BY_ROLE[role],
         }
     },
     components: {
