@@ -9,18 +9,18 @@
 
             <!-- Render text/number/email/date/time inputs: checks if field.type matches any in the array -->
             <input v-if="['text', 'number', 'email', 'date', 'time'].includes(field.type)" :id="field.key"
-                class="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                class="px-3 py-2 rounded-md border-2 border-secondary bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary"
                 v-model="form[field.key]" :type="field.type" :placeholder="field.placeholder || ''"
                 :required="field.required" />
 
             <!-- Textarea -->
             <textarea v-else-if="field.type === 'textarea'" :id="field.key"
-                class="px-3 py-2 rounded-md border border-gray-300 min-h-[100px] focus:outline-none focus:ring-2 focus:ring-primary"
+                class="px-3 py-2 rounded-md border-2 border-secondary bg-slate-100 min-h-[100px] focus:outline-none focus:ring-2 focus:ring-primary"
                 v-model="form[field.key]" :placeholder="field.placeholder || ''" :required="field.required" />
 
             <!-- Select dropdown: renders options from field.options array -->
             <select v-else-if="field.type === 'select'" :id="field.key"
-                class="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                class="px-3 py-2 rounded-md border-2 border-secondary bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary"
                 v-model="form[field.key]" :required="field.required">
                 <option disabled value="">{{ field.placeholder || 'Select…' }}</option>
                 <!-- Handle both simple strings and objects: opt.value || opt catches both formats -->
@@ -37,7 +37,7 @@
 
             <!-- Fallback for unknown types -->
             <input v-else :id="field.key"
-                class="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                class="px-3 py-2 rounded-md border-2 border-secondary bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary"
                 v-model="form[field.key]" :placeholder="field.placeholder || ''" />
 
             <!-- Display validation errors for this field -->
@@ -100,6 +100,7 @@ export default {
             return Object.keys(errs).length === 0; // true if no errors
         },
         async handleSubmit() {
+            console.log(this.form);
             // Prevent submission if validation fails
             if (!this.validate()) {
                 this.$emit('error', { type: 'validation', errors: this.errors });

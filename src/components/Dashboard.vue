@@ -155,8 +155,8 @@ const IP_BY_ROLE = {
 export default {
     data() {
         return {
-            name: "John Doe",
-            services: IP_BY_ROLE["admin"],
+            name: localStorage.getItem('name') || "John Doe",
+            services: IP_BY_ROLE["student"],
         }
     },
     components: {

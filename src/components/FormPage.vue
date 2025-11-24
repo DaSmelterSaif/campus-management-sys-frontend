@@ -1,6 +1,7 @@
 <template>
-    <div class="h-screen flex justify-center items-start bg-linear-180 from-39% from-white to-100% to-slate-200">
-        <div class="w-[750px] min-h-[95vh] p-14 pb-6 bg-blue-200 rounded-md overflow-hidden shadow-lg">
+    <div
+        class="h-screen bg-linear-180 from-39% from-white to-100% to-slate-200 fixed inset-0 flex justify-center items-start overflow-y-auto">
+        <div class="w-[750px] min-h-[95vh] p-14 mt-4 pb-6 bg-blue-200 rounded-md overflow-hidden shadow-lg">
             <h1 class="mb-12 text-5xl font-semibold">{{ BACKEND_IP_BY_SERVICE_ID[serviceId].name }}</h1>
             <FormBuilder :schema="service.schema" :submit-url="service.ip" />
         </div>
@@ -18,12 +19,11 @@ export default {
                 ip: "http://localhost:8080/bookroom",
                 schema: {
                     fields: [
+                        { key: "userId", label: "User ID", type: "text", placeholder: "For demonstration", required: true },
                         { key: "roomId", label: "Room", type: "text", placeholder: "e.g. A-101", required: true },
                         { key: "date", label: "Date", type: "date", required: true },
                         { key: "startTime", label: "Start Time", type: "time", required: true },
                         { key: "endTime", label: "End Time", type: "time", required: true },
-                        { key: "purpose", label: "Purpose", type: "textarea", placeholder: "What is this booking for?" },
-                        { key: "attendees", label: "Expected Attendees", type: "number", min: 1, default: 1 }
                     ]
                 }
             },
@@ -33,13 +33,13 @@ export default {
                 ip: "http://localhost:8080/scheduleevents",
                 schema: {
                     fields: [
+                        { key: "userId", label: "User ID", type: "text", required: true },
                         { key: "title", label: "Title", type: "text", required: true },
+                        { key: "roomId", label: "Room ID", type: "text", required: true },
                         { key: "date", label: "Date", type: "date", required: true },
                         { key: "startTime", label: "Start Time", type: "time", required: true },
                         { key: "endTime", label: "End Time", type: "time", required: true },
-                        { key: "location", label: "Location", type: "text", required: true },
-                        { key: "capacity", label: "Capacity", type: "number" },
-                        { key: "description", label: "Description", type: "textarea" }
+                        { key: "description", label: "Description", type: "textarea", required: false }
                     ]
                 }
             },
@@ -49,6 +49,7 @@ export default {
                 ip: "http://localhost:8080/registerevent",
                 schema: {
                     fields: [
+                        { key: "userId", label: "User ID", type: "text", required: true },
                         { key: "eventId", label: "Event ID", type: "text", required: true },
                         {
                             key: "action", label: "Action", type: "select", required: true,
@@ -89,6 +90,7 @@ export default {
                 ip: "http://localhost:8080/maintenancerequest",
                 schema: {
                     fields: [
+                        { key: "userId", label: "User ID", type: "text", required: true },
                         { key: "location", label: "Location", type: "text", placeholder: "Building/Room", required: true },
                         {
                             key: "category", label: "Category", type: "select", required: true,
@@ -141,6 +143,7 @@ export default {
                 schema: {
                     fields: [
                         { key: "bookingId", label: "Booking ID", type: "text", required: true },
+                        { key: "roomId", label: "Room ID", type: "text", required: true },
                         {
                             key: "decision", label: "Decision", type: "select", required: true,
                             options: [
@@ -148,7 +151,7 @@ export default {
                                 { value: "reject", label: "Reject" }
                             ]
                         },
-                        { key: "note", label: "Note", type: "textarea", placeholder: "Optional comment to requester" }
+                        { key: "note", label: "Note", type: "textarea", placeholder: "Optional comment", required: false }
                     ]
                 }
             },
@@ -218,8 +221,23 @@ export default {
             () => this.$route.params.serviceId,
             (newId) => {
                 this.serviceId = newId;
+                this.service = this.BACKEND_IP_BY_SERVICE_ID[newId];
+                this.autoFillUserId();
             }
-        )
+        );
+        // Auto-fill on initial load
+        this.autoFillUserId();
+    },
+    methods: {
+        autoFillUserId() {
+            const userId = localStorage.getItem('userId');
+            if (userId && this.service && this.service.schema.fields.some(f => f.key === 'userId')) {
+                const userIdField = this.service.schema.fields.find(f => f.key === 'userId');
+                if (userIdField) {
+                    userIdField.default = userId;
+                }
+            }
+        }
     },
     components: {
         FormBuilder
