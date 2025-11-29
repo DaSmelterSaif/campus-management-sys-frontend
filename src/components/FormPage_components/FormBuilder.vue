@@ -8,10 +8,11 @@
             </label>
 
             <!-- Render text/number/email/date/time inputs: checks if field.type matches any in the array -->
-            <input v-if="['text', 'number', 'email', 'date', 'time'].includes(field.type)" :id="field.key"
-                class="px-3 py-2 rounded-md border-2 border-secondary bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary"
-                v-model="form[field.key]" :type="field.type" :placeholder="field.placeholder || ''"
-                :required="field.required" />
+            <input v-if="['text', 'number', 'email', 'date', 'time'].includes(field.type)" :id="field.key" :class="[
+                'px-3 py-2 rounded-md border-2 border-secondary focus:outline-none focus:ring-2 focus:ring-primary',
+                isReadOnlyField(field.key) ? 'bg-gray-200 cursor-not-allowed' : 'bg-slate-100'
+            ]" v-model="form[field.key]" :type="field.type" :placeholder="field.placeholder || ''"
+                :required="field.required" :disabled="isReadOnlyField(field.key)" />
 
             <!-- Textarea -->
             <textarea v-else-if="field.type === 'textarea'" :id="field.key"
@@ -45,7 +46,14 @@
         </div>
 
         <div class="flex items-center justify-between pt-4">
-            <slot name="left-actions" />
+            <div class="flex gap-2">
+                <slot name="left-actions" />
+                <button v-if="readOnlyFields.length > 0 && readOnlyFields.includes('bookingId')" type="button"
+                    @click="showBookingsModal = true"
+                    class="bg-secondary hover:bg-hovered-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
+                    View Bookings
+                </button>
+            </div>
             <button type="submit"
                 class="bg-primary hover:bg-hovered-btn active:bg-clicked-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
                 {{ submitLabel || 'Submit' }}
@@ -55,10 +63,15 @@
 
     <!-- Response Modal -->
     <ResponseModal :data="responseData" :isOpen="showModal" @close="showModal = false" />
+
+    <!-- Bookings Modal -->
+    <BookingsModal :is-open="showBookingsModal" :user-id="getUserId()" @close="showBookingsModal = false"
+        @booking-selected="onBookingSelected" />
 </template>
 
 <script>
 import ResponseModal from './ResponseModal.vue';
+import BookingsModal from './BookingsModal.vue';
 
 export default {
     name: "FormBuilder",
@@ -67,7 +80,8 @@ export default {
         submitUrl: { type: String, default: "" },
         method: { type: String, default: "POST" },
         accessToken: { type: String, default: "" },
-        submitLabel: { type: String, default: "Submit" }
+        submitLabel: { type: String, default: "Submit" },
+        readOnlyFields: { type: Array, default: () => [] }
     },
     emits: ["submitted", "error"],
     data() {
@@ -79,9 +93,15 @@ export default {
             else if (f.type === "select") initial[f.key] = f.default ?? "";
             else initial[f.key] = f.default ?? "";
         });
-        return { form: initial, errors: {}, showModal: false, responseData: null };
+        return { form: initial, errors: {}, showModal: false, responseData: null, showBookingsModal: false };
     },
     methods: {
+        getUserId() {
+            return localStorage.getItem('userId') || '';
+        },
+        isReadOnlyField(fieldKey) {
+            return this.readOnlyFields.includes(fieldKey);
+        },
         // Validate form before submission: check required fields and email format
         validate() {
             const errs = {};
@@ -143,10 +163,22 @@ export default {
                 // Emit error if network or response fails
                 this.$emit('error', { type: 'network', message: e.message });
             }
+        },
+        onBookingSelected(booking) {
+            // Auto-fill form with selected booking data
+            this.form.bookingId = booking.bookingId;
+            this.form.roomId = booking.roomId;
+            this.form.date = booking.date;
+            this.form.startTime = booking.startTime;
+            this.form.endTime = booking.endTime;
+            if (this.form.status !== undefined) {
+                this.form.status = booking.status;
+            }
         }
     },
     components: {
-        ResponseModal
+        ResponseModal,
+        BookingsModal
     }
 };
 </script>

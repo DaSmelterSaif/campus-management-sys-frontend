@@ -1,8 +1,14 @@
 <template>
     <div class="bg-gray-100 min-h-screen">
         <div class="w-28 h-screen fixed top-0 left-0 bg-gray-700">
-            <SidebarButton class="bg-primary flex justify-center items-center">LOGO HERE</SidebarButton>
-            <SidebarButton class="bg-gray-600" />
+            <SidebarButton @click="goToHome"
+                class="bg-primary flex justify-center items-center cursor-pointer hover:bg-opacity-80 transition-all">
+                LOGO HERE</SidebarButton>
+            <SidebarButton @click="goToBookings"
+                class="bg-gray-600 cursor-pointer hover:bg-opacity-80 transition-all flex justify-center items-center text-4xl"
+                title="View Bookings">
+                📅
+            </SidebarButton>
         </div>
         <div class="ml-28 p-8">
             <h1 class="mb-12 text-5xl font-semibold">Welcome back, {{ name }}!</h1>
@@ -53,7 +59,7 @@ const IP_BY_ROLE = {
             name: "Cancel Booking",
             description: "Cancel your room bookings",
             ip: "form/5",
-            disabled: true
+            disabled: false
         },
         {
             id: 6,
@@ -143,7 +149,7 @@ const IP_BY_ROLE = {
             name: "Cancel Booking",
             description: "Cancel your room bookings",
             ip: "form/5",
-            disabled: true
+            disabled: false
         },
         {
             id: 20,
@@ -188,6 +194,14 @@ export default {
         return {
             name: localStorage.getItem('name') || "John Doe",
             services: IP_BY_ROLE[role],
+        }
+    },
+    methods: {
+        goToHome() {
+            this.$router.push('/dashboard');
+        },
+        goToBookings() {
+            this.$router.push('/bookings');
         }
     },
     components: {

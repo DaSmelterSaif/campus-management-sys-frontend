@@ -3,7 +3,8 @@
         class="h-screen bg-linear-180 from-39% from-white to-100% to-slate-200 fixed inset-0 flex justify-center items-start overflow-y-auto">
         <div class="w-[750px] min-h-[95vh] p-14 mt-4 pb-6 bg-blue-200 rounded-md overflow-hidden shadow-lg">
             <h1 class="mb-12 text-5xl font-semibold">{{ BACKEND_IP_BY_SERVICE_ID[serviceId].name }}</h1>
-            <FormBuilder :schema="service.schema" :submit-url="service.ip" />
+            <FormBuilder :schema="service.schema" :submit-url="service.ip"
+                :read-only-fields="getReadOnlyFields(serviceId)" />
         </div>
     </div>
 </template>
@@ -80,6 +81,7 @@ export default {
                 schema: {
                     fields: [
                         { key: "bookingId", label: "Booking ID", type: "text", required: true },
+                        { key: "roomId", label: "Room ID", type: "text", required: true },
                         { key: "reason", label: "Reason", type: "textarea" }
                     ]
                 }
@@ -229,6 +231,15 @@ export default {
         this.autoFillUserId();
     },
     methods: {
+        getReadOnlyFields(serviceId) {
+            // Services with booking-related read-only fields
+            const readOnlyMap = {
+                5: ["bookingId", "roomId"],    // Cancel Booking (student)
+                9: ["bookingId", "roomId"],    // Approve/Reject Booking (admin)
+                11: ["bookingId", "roomId"],   // Cancel Booking (admin)
+            };
+            return readOnlyMap[serviceId] || [];
+        },
         autoFillUserId() {
             const userId = localStorage.getItem('userId');
             if (userId && this.service && this.service.schema.fields.some(f => f.key === 'userId')) {

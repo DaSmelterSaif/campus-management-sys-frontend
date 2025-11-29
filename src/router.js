@@ -6,6 +6,7 @@ import Login from "./components/Auth_components/Login.vue";
 import Register from "./components/Auth_components/Register.vue";
 import Dashboard from "./components/Dashboard.vue";
 import FormPage from "./components/FormPage.vue";
+import BookingsList from "./components/BookingsList.vue";
 
 const routes = [
   { path: "/", component: Redirector },
@@ -24,7 +25,8 @@ const routes = [
     ],
   },
   { path: "/dashboard", component: Dashboard },
-  { path: "/form/:serviceId", component: FormPage },
+  { path: "/bookings", component: BookingsList },
+  { path: "/form/:serviceId", name: "form", component: FormPage },
 ];
 
 const router = createRouter({

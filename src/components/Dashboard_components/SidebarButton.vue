@@ -1,16 +1,15 @@
 <template>
-    <div class="w-full aspect-square select-none">
+    <div class="w-full aspect-square select-none" @click="$emit('click')" :title="title">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-
-        }
-    }
+    props: {
+        title: { type: String, default: "" }
+    },
+    emits: ["click"]
 }
 </script>
 
