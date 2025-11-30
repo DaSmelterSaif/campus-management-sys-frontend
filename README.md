@@ -72,16 +72,17 @@ There are a number of routes in the [routes](#routes) to navigate the app.
 
 ### Routes
 
-- /
-- /auth
-- /auth/login
-- /auth/register
-- /dashboard
+- / - Redirects to /auth/login
+- /auth/login - User login page
+- /auth/register - User registration page
+- /dashboard - Main dashboard (requires login)
+- /bookings - View user bookings
+- /form/:serviceId - Dynamic form page for different services
 
 Notes:
 
-- '/' just redirects you to '/auth/login' temporarily.
-- '/auth' is not supposed to work and is a bug for now.
+- '/' just redirects you to '/auth/login'
+- '/auth' is not supposed to work directly, navigate to /auth/login instead
 - '/dashboard' should only work when signed in
 
 ## Available Scripts
@@ -158,7 +159,7 @@ along with their corresponding services and backend routes:
 
 - **View Student Feedback**  
   Service ID: 12  
-  Backend Route: '/predictenergywater'  
+  Backend Route: '/getstudentfeedback'  
   Role:
 
 - **Summarize Student Feedback**  

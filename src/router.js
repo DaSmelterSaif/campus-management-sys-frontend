@@ -7,6 +7,7 @@ import Register from "./components/Auth_components/Register.vue";
 import Dashboard from "./components/Dashboard.vue";
 import FormPage from "./components/FormPage.vue";
 import BookingsList from "./components/BookingsList.vue";
+import EventsList from "./components/EventsList.vue";
 
 const routes = [
   { path: "/", component: Redirector },
@@ -24,8 +25,14 @@ const routes = [
       },
     ],
   },
-  { path: "/dashboard", component: Dashboard },
-  { path: "/bookings", component: BookingsList },
+  {
+    path: "/dashboard",
+    component: Dashboard,
+    children: [
+      { path: "bookings", component: BookingsList },
+      { path: "events", component: EventsList },
+    ],
+  },
   { path: "/form/:serviceId", name: "form", component: FormPage },
 ];
 

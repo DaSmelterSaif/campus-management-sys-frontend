@@ -4,7 +4,7 @@
         <div class="w-[750px] min-h-[95vh] p-14 mt-4 pb-6 bg-blue-200 rounded-md overflow-hidden shadow-lg">
             <h1 class="mb-12 text-5xl font-semibold">{{ BACKEND_IP_BY_SERVICE_ID[serviceId].name }}</h1>
             <FormBuilder :schema="service.schema" :submit-url="service.ip"
-                :read-only-fields="getReadOnlyFields(serviceId)" />
+                :read-only-fields="getReadOnlyFields(serviceId)" :disabled-fields="getDisabledFields(serviceId)" />
         </div>
     </div>
 </template>
@@ -236,13 +236,25 @@ export default {
     },
     methods: {
         getReadOnlyFields(serviceId) {
-            // Services with booking-related read-only fields
+            // Services with booking-related read-only fields and event-related read-only fields
             const readOnlyMap = {
+                3: ["eventId"],            // Register/Dismiss Event (student)
+                4: ["eventId"],            // Cancel Event (student/admin/faculty)
                 5: ["bookingId", "roomId"],    // Cancel Booking (student)
                 9: ["bookingId", "roomId"],    // Approve/Reject Booking (admin)
                 11: ["bookingId", "roomId"],   // Cancel Booking (admin)
             };
             return readOnlyMap[serviceId] || [];
+        },
+        getDisabledFields(serviceId) {
+            // Services that have userId field but should be disabled (auto-filled, not editable)
+            const disabledMap = {
+                1: ["userId"],             // Room Booking
+                2: ["userId"],             // Schedule Events
+                3: ["userId"],             // Register/Dismiss Event
+                6: ["userId"],             // Submit Maintenance Request
+            };
+            return disabledMap[serviceId] || [];
         },
         autoFillUserId() {
             const userId = localStorage.getItem('userId');
@@ -266,7 +278,9 @@ export default {
                     // Pre-fill form fields with chatbot payload data
                     if (this.service && this.service.schema.fields) {
                         this.service.schema.fields.forEach(field => {
-                            if (payload.data[field.key] !== undefined) {
+                            // Only apply non-null, non-undefined values from chatbot payload
+                            // This preserves auto-filled values like userId when backend returns null
+                            if (payload.data[field.key] !== null && payload.data[field.key] !== undefined) {
                                 field.default = payload.data[field.key];
                             }
                         });

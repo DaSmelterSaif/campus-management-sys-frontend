@@ -10,9 +10,9 @@
             <!-- Render text/number/email/date/time inputs: checks if field.type matches any in the array -->
             <input v-if="['text', 'number', 'email', 'date', 'time'].includes(field.type)" :id="field.key" :class="[
                 'px-3 py-2 rounded-md border-2 border-secondary focus:outline-none focus:ring-2 focus:ring-primary',
-                isReadOnlyField(field.key) ? 'bg-gray-200 cursor-not-allowed' : 'bg-slate-100'
+                isReadOnlyField(field.key) || isDisabledField(field.key) ? 'bg-gray-200 cursor-not-allowed' : 'bg-slate-100'
             ]" v-model="form[field.key]" :type="field.type" :placeholder="field.placeholder || ''"
-                :required="field.required" :disabled="isReadOnlyField(field.key)" />
+                :required="field.required" :disabled="isReadOnlyField(field.key) || isDisabledField(field.key)" />
 
             <!-- Textarea -->
             <textarea v-else-if="field.type === 'textarea'" :id="field.key"
@@ -53,6 +53,11 @@
                     class="bg-secondary hover:bg-hovered-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
                     View Bookings
                 </button>
+                <button v-if="readOnlyFields.length > 0 && readOnlyFields.includes('eventId')" type="button"
+                    @click="showEventsModal = true"
+                    class="bg-secondary hover:bg-hovered-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
+                    View Events
+                </button>
             </div>
             <button type="submit"
                 class="bg-primary hover:bg-hovered-btn active:bg-clicked-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
@@ -67,11 +72,16 @@
     <!-- Bookings Modal -->
     <BookingsModal :is-open="showBookingsModal" :user-id="getUserId()" @close="showBookingsModal = false"
         @booking-selected="onBookingSelected" />
+
+    <!-- Events Modal -->
+    <EventsModal :is-open="showEventsModal" :user-id="getUserId()" @close="showEventsModal = false"
+        @event-selected="onEventSelected" />
 </template>
 
 <script>
 import ResponseModal from './ResponseModal.vue';
 import BookingsModal from './BookingsModal.vue';
+import EventsModal from './EventsModal.vue';
 
 export default {
     name: "FormBuilder",
@@ -81,7 +91,8 @@ export default {
         method: { type: String, default: "POST" },
         accessToken: { type: String, default: "" },
         submitLabel: { type: String, default: "Submit" },
-        readOnlyFields: { type: Array, default: () => [] }
+        readOnlyFields: { type: Array, default: () => [] },
+        disabledFields: { type: Array, default: () => [] }
     },
     emits: ["submitted", "error"],
     data() {
@@ -93,7 +104,7 @@ export default {
             else if (f.type === "select") initial[f.key] = f.default ?? "";
             else initial[f.key] = f.default ?? "";
         });
-        return { form: initial, errors: {}, showModal: false, responseData: null, showBookingsModal: false };
+        return { form: initial, errors: {}, showModal: false, responseData: null, showBookingsModal: false, showEventsModal: false };
     },
     methods: {
         getUserId() {
@@ -101,6 +112,9 @@ export default {
         },
         isReadOnlyField(fieldKey) {
             return this.readOnlyFields.includes(fieldKey);
+        },
+        isDisabledField(fieldKey) {
+            return this.disabledFields && this.disabledFields.includes(fieldKey);
         },
         // Validate form before submission: check required fields and email format
         validate() {
@@ -174,11 +188,16 @@ export default {
             if (this.form.status !== undefined) {
                 this.form.status = booking.status;
             }
+        },
+        onEventSelected(event) {
+            // Auto-fill form with selected event data
+            this.form.eventId = event.eventId;
         }
     },
     components: {
         ResponseModal,
-        BookingsModal
+        BookingsModal,
+        EventsModal
     }
 };
 </script>

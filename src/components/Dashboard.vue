@@ -9,17 +9,26 @@
                 title="View Bookings">
                 📅
             </SidebarButton>
+            <SidebarButton @click="goToEvents"
+                class="bg-gray-600 cursor-pointer hover:bg-opacity-80 transition-all flex justify-center items-center text-4xl"
+                title="View Events">
+                📌
+            </SidebarButton>
         </div>
         <div class="ml-28 p-8">
-            <h1 class="mb-12 text-5xl font-semibold">Welcome back, {{ name }}!</h1>
-            <h2 class="text-4xl mb-12">Services</h2>
-            <!-- Services -->
-            <div class="grid grid-cols-3 gap-8 justify-items-center">
-                <ServiceCard v-for="service in services" :key="service.id" btn-word="Submit" :service-ip="service.ip"
-                    :service-description="service.description" :disabled="service.disabled || false">
-                    {{ service.name }}
-                </ServiceCard>
-            </div>
+            <template v-if="!hasChildRoute">
+                <h1 class="mb-12 text-5xl font-semibold">Welcome back, {{ name }}!</h1>
+                <h2 class="text-4xl mb-12">Services</h2>
+                <!-- Services -->
+                <div class="grid grid-cols-3 gap-8 justify-items-center">
+                    <ServiceCard v-for="service in services" :key="service.id" btn-word="Submit"
+                        :service-ip="service.ip" :service-description="service.description"
+                        :disabled="service.disabled || false">
+                        {{ service.name }}
+                    </ServiceCard>
+                </div>
+            </template>
+            <router-view v-else />
         </div>
 
         <!-- Chatbot Widget -->
@@ -193,12 +202,20 @@ export default {
             services: IP_BY_ROLE[role],
         }
     },
+    computed: {
+        hasChildRoute() {
+            return this.$route.matched.length > 1;
+        }
+    },
     methods: {
         goToHome() {
             this.$router.push('/dashboard');
         },
         goToBookings() {
-            this.$router.push('/bookings');
+            this.$router.push('/dashboard/bookings');
+        },
+        goToEvents() {
+            this.$router.push('/dashboard/events');
         }
     },
     components: {
