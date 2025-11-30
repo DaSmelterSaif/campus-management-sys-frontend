@@ -58,6 +58,11 @@
                     class="bg-secondary hover:bg-hovered-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
                     View Events
                 </button>
+                <button v-if="readOnlyFields.length > 0 && readOnlyFields.includes('requestId')" type="button"
+                    @click="showMaintenanceModal = true"
+                    class="bg-secondary hover:bg-hovered-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
+                    View Maintenance Requests
+                </button>
             </div>
             <button type="submit"
                 class="bg-primary hover:bg-hovered-btn active:bg-clicked-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
@@ -76,12 +81,17 @@
     <!-- Events Modal -->
     <EventsModal :is-open="showEventsModal" :user-id="getUserId()" @close="showEventsModal = false"
         @event-selected="onEventSelected" />
+
+    <!-- Maintenance Modal -->
+    <MaintenanceModal :is-open="showMaintenanceModal" :user-id="getUserId()" @close="showMaintenanceModal = false"
+        @request-selected="onMaintenanceRequestSelected" />
 </template>
 
 <script>
 import ResponseModal from './ResponseModal.vue';
 import BookingsModal from './BookingsModal.vue';
 import EventsModal from './EventsModal.vue';
+import MaintenanceModal from './MaintenanceModal.vue';
 
 export default {
     name: "FormBuilder",
@@ -104,7 +114,7 @@ export default {
             else if (f.type === "select") initial[f.key] = f.default ?? "";
             else initial[f.key] = f.default ?? "";
         });
-        return { form: initial, errors: {}, showModal: false, responseData: null, showBookingsModal: false, showEventsModal: false };
+        return { form: initial, errors: {}, showModal: false, responseData: null, showBookingsModal: false, showEventsModal: false, showMaintenanceModal: false };
     },
     methods: {
         getUserId() {
@@ -192,12 +202,23 @@ export default {
         onEventSelected(event) {
             // Auto-fill form with selected event data
             this.form.eventId = event.eventId;
+        },
+        onMaintenanceRequestSelected(request) {
+            // Auto-fill form with selected maintenance request data
+            this.form.requestId = request.requestId;
+            if (this.form.status !== undefined) {
+                this.form.status = request.status;
+            }
+            if (this.form.description !== undefined) {
+                this.form.description = request.description;
+            }
         }
     },
     components: {
         ResponseModal,
         BookingsModal,
-        EventsModal
+        EventsModal,
+        MaintenanceModal
     }
 };
 </script>

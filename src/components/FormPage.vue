@@ -241,6 +241,7 @@ export default {
                 3: ["eventId"],            // Register/Dismiss Event (student)
                 4: ["eventId"],            // Cancel Event (student/admin/faculty)
                 5: ["bookingId", "roomId"],    // Cancel Booking (student)
+                7: ["requestId"],          // View Maintenance Status (student/admin)
                 9: ["bookingId", "roomId"],    // Approve/Reject Booking (admin)
                 11: ["bookingId", "roomId"],   // Cancel Booking (admin)
             };
