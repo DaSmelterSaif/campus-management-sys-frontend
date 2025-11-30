@@ -21,12 +21,16 @@
                 </ServiceCard>
             </div>
         </div>
+
+        <!-- Chatbot Widget -->
+        <ChatbotWidget />
     </div>
 </template>
 
 <script>
 import SidebarButton from './Dashboard_components/SidebarButton.vue';
 import ServiceCard from './Dashboard_components/ServiceCard.vue';
+import ChatbotWidget from './ChatbotWidget.vue';
 
 const IP_BY_ROLE = {
     student: [
@@ -72,13 +76,6 @@ const IP_BY_ROLE = {
             name: "View Maintenance Status",
             description: "Track your maintenance requests",
             ip: "form/7"
-        },
-        {
-            id: 8,
-            name: "Ask Chatbot",
-            description: "Get instant answers from our AI assistant",
-            ip: "form/8",
-            disabled: true
         }
     ],
     admin: [
@@ -206,7 +203,8 @@ export default {
     },
     components: {
         SidebarButton,
-        ServiceCard
+        ServiceCard,
+        ChatbotWidget
     }
 }
 </script>

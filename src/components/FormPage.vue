@@ -216,6 +216,7 @@ export default {
             serviceId: this.$route.params.serviceId,
             service: BACKEND_IP_BY_SERVICE_ID[this.$route.params.serviceId],
             BACKEND_IP_BY_SERVICE_ID,
+            chatbotPayload: null
         };
     },
     created() {
@@ -225,10 +226,13 @@ export default {
                 this.serviceId = newId;
                 this.service = this.BACKEND_IP_BY_SERVICE_ID[newId];
                 this.autoFillUserId();
+                this.applyChatbotPayload();
             }
         );
         // Auto-fill on initial load
         this.autoFillUserId();
+        // Check for chatbot payload
+        this.applyChatbotPayload();
     },
     methods: {
         getReadOnlyFields(serviceId) {
@@ -247,6 +251,32 @@ export default {
                 if (userIdField) {
                     userIdField.default = userId;
                 }
+            }
+        },
+        applyChatbotPayload() {
+            // Check if there's a chatbot payload in sessionStorage
+            const payloadStr = sessionStorage.getItem('chatbotPayload');
+            if (!payloadStr) return;
+
+            try {
+                const payload = JSON.parse(payloadStr);
+                // Only apply if the serviceId matches the current form
+                if (payload.serviceId == this.serviceId && payload.data) {
+                    this.chatbotPayload = payload.data;
+                    // Pre-fill form fields with chatbot payload data
+                    if (this.service && this.service.schema.fields) {
+                        this.service.schema.fields.forEach(field => {
+                            if (payload.data[field.key] !== undefined) {
+                                field.default = payload.data[field.key];
+                            }
+                        });
+                    }
+                    // Clear the payload from sessionStorage after applying
+                    sessionStorage.removeItem('chatbotPayload');
+                }
+            } catch (err) {
+                console.error("Error applying chatbot payload:", err);
+                sessionStorage.removeItem('chatbotPayload');
             }
         }
     },
