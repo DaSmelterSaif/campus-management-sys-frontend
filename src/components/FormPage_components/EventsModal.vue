@@ -31,10 +31,10 @@
                     <thead>
                         <tr class="bg-gray-200 border-b-2 border-gray-400">
                             <th class="px-4 py-2 text-left font-semibold">Event ID</th>
-                            <th class="px-4 py-2 text-left font-semibold">Title</th>
+                            <th class="px-4 py-2 text-left font-semibold">Name</th>
+                            <th class="px-4 py-2 text-left font-semibold">Description</th>
                             <th class="px-4 py-2 text-left font-semibold">Date</th>
                             <th class="px-4 py-2 text-left font-semibold">Time</th>
-                            <th class="px-4 py-2 text-left font-semibold">Room</th>
                             <th class="px-4 py-2 text-center font-semibold">Action</th>
                         </tr>
                     </thead>
@@ -42,10 +42,10 @@
                         <tr v-for="event in events" :key="event.eventId"
                             class="border-b border-gray-300 hover:bg-gray-50">
                             <td class="px-4 py-2 font-mono text-sm">{{ event.eventId }}</td>
-                            <td class="px-4 py-2">{{ event.title }}</td>
+                            <td class="px-4 py-2">{{ event.name }}</td>
+                            <td class="px-4 py-2 text-sm truncate max-w-xs">{{ event.description }}</td>
                             <td class="px-4 py-2">{{ event.date }}</td>
                             <td class="px-4 py-2 text-sm">{{ event.startTime }} - {{ event.endTime }}</td>
-                            <td class="px-4 py-2">{{ event.roomId }}</td>
                             <td class="px-4 py-2 text-center">
                                 <button @click="selectEvent(event)"
                                     class="bg-primary hover:bg-hovered-btn text-white px-3 py-1 rounded text-sm transition-colors">

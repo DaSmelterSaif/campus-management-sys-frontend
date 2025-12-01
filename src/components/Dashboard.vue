@@ -14,6 +14,11 @@
                 title="View Events">
                 📌
             </SidebarButton>
+            <SidebarButton @click="goToMaintenance"
+                class="bg-gray-600 cursor-pointer hover:bg-opacity-80 transition-all flex justify-center items-center text-4xl"
+                title="View Maintenance">
+                🔧
+            </SidebarButton>
         </div>
         <div class="ml-28 p-8">
             <template v-if="!hasChildRoute">
@@ -40,6 +45,7 @@
 import SidebarButton from './Dashboard_components/SidebarButton.vue';
 import ServiceCard from './Dashboard_components/ServiceCard.vue';
 import ChatbotWidget from './ChatbotWidget.vue';
+import MaintenanceList from './MaintenanceList.vue';
 
 const IP_BY_ROLE = {
     student: [
@@ -216,12 +222,16 @@ export default {
         },
         goToEvents() {
             this.$router.push('/dashboard/events');
+        },
+        goToMaintenance() {
+            this.$router.push('/dashboard/maintenance');
         }
     },
     components: {
         SidebarButton,
         ServiceCard,
-        ChatbotWidget
+        ChatbotWidget,
+        MaintenanceList
     }
 }
 </script>

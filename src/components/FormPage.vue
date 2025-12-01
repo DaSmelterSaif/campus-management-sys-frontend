@@ -4,7 +4,8 @@
         <div class="w-[750px] min-h-[95vh] p-14 mt-4 pb-6 bg-blue-200 rounded-md overflow-hidden shadow-lg">
             <h1 class="mb-12 text-5xl font-semibold">{{ BACKEND_IP_BY_SERVICE_ID[serviceId].name }}</h1>
             <FormBuilder :schema="service.schema" :submit-url="service.ip"
-                :read-only-fields="getReadOnlyFields(serviceId)" :disabled-fields="getDisabledFields(serviceId)" />
+                :read-only-fields="getReadOnlyFields(serviceId)" :disabled-fields="getDisabledFields(serviceId)"
+                :is-admin-approve-reject="serviceId == 9" />
         </div>
     </div>
 </template>

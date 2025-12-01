@@ -69,7 +69,8 @@ export default {
     name: "BookingsModal",
     props: {
         isOpen: { type: Boolean, default: false },
-        userId: { type: String, required: true }
+        userId: { type: String, required: true },
+        fetchAllBookings: { type: Boolean, default: false }
     },
     emits: ["close", "booking-selected"],
     data() {
@@ -91,7 +92,13 @@ export default {
             this.loading = true;
             this.error = null;
             try {
-                const response = await fetch(`http://localhost:8080/getbookings?userId=${this.userId}`);
+                let url;
+                if (this.fetchAllBookings) {
+                    url = `http://localhost:8080/getallbookings`;
+                } else {
+                    url = `http://localhost:8080/getbookings?userId=${this.userId}`;
+                }
+                const response = await fetch(url);
                 const data = await response.json();
 
                 if (!response.ok) {

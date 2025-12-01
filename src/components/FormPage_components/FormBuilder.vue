@@ -75,8 +75,8 @@
     <ResponseModal :data="responseData" :isOpen="showModal" @close="showModal = false" />
 
     <!-- Bookings Modal -->
-    <BookingsModal :is-open="showBookingsModal" :user-id="getUserId()" @close="showBookingsModal = false"
-        @booking-selected="onBookingSelected" />
+    <BookingsModal :is-open="showBookingsModal" :user-id="getUserId()" :fetch-all-bookings="isAdminApproveReject"
+        @close="showBookingsModal = false" @booking-selected="onBookingSelected" />
 
     <!-- Events Modal -->
     <EventsModal :is-open="showEventsModal" :user-id="getUserId()" @close="showEventsModal = false"
@@ -102,7 +102,8 @@ export default {
         accessToken: { type: String, default: "" },
         submitLabel: { type: String, default: "Submit" },
         readOnlyFields: { type: Array, default: () => [] },
-        disabledFields: { type: Array, default: () => [] }
+        disabledFields: { type: Array, default: () => [] },
+        isAdminApproveReject: { type: Boolean, default: false }
     },
     emits: ["submitted", "error"],
     data() {

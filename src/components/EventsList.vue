@@ -35,7 +35,12 @@
 
                     <div class="mb-4">
                         <p class="text-sm text-gray-500 uppercase font-semibold">Event Name</p>
-                        <p class="text-lg font-bold text-gray-800">{{ event.eventName }}</p>
+                        <p class="text-lg font-bold text-gray-800">{{ event.name }}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 uppercase font-semibold">Description</p>
+                        <p class="text-sm text-gray-700 line-clamp-2">{{ event.description }}</p>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
@@ -44,23 +49,15 @@
                             <p class="text-lg font-bold text-gray-800">{{ formatDate(event.date) }}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-500 uppercase font-semibold">Time</p>
-                            <p class="text-lg font-bold text-gray-800">{{ event.startTime }}</p>
+                            <p class="text-sm text-gray-500 uppercase font-semibold">Attendees</p>
+                            <p class="text-lg font-bold text-gray-800">{{ event.attendeeCount }}</p>
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <p class="text-sm text-gray-500 uppercase font-semibold">Location</p>
-                        <p class="text-lg font-bold text-gray-800">{{ event.location }}</p>
-                    </div>
-
-                    <div class="mb-4 flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-500 uppercase font-semibold">Status</p>
-                            <span :class="getStatusBadgeClass(event.status)">
-                                {{ event.status }}
-                            </span>
-                        </div>
+                        <p class="text-sm text-gray-500 uppercase font-semibold">Room & Time</p>
+                        <p class="text-sm text-gray-700">{{ event.roomId }} • {{ event.startTime }} - {{ event.endTime
+                            }}</p>
                     </div>
 
                     <button @click="cancelEvent(event)"
@@ -117,10 +114,11 @@ export default {
                 params: { serviceId: 4 },
                 query: {
                     eventId: event.eventId,
-                    eventName: event.eventName,
+                    title: event.name,
+                    roomId: event.roomId,
                     date: event.date,
                     startTime: event.startTime,
-                    location: event.location
+                    endTime: event.endTime
                 }
             });
         },
@@ -131,17 +129,6 @@ export default {
             } catch {
                 return dateStr;
             }
-        },
-        getStatusBadgeClass(status) {
-            const baseClass = "px-3 py-1 rounded-full text-sm font-medium text-white inline-block";
-            const statusClasses = {
-                pending: "bg-yellow-500",
-                approved: "bg-green-500",
-                rejected: "bg-red-500",
-                cancelled: "bg-gray-500",
-                completed: "bg-blue-500"
-            };
-            return `${baseClass} ${statusClasses[status] || "bg-gray-400"}`;
         }
     }
 };
