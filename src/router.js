@@ -9,6 +9,7 @@ import FormPage from "./components/FormPage.vue";
 import BookingsList from "./components/BookingsList.vue";
 import EventsList from "./components/EventsList.vue";
 import MaintenanceList from "./components/MaintenanceList.vue";
+import MaintenanceStaffList from "./components/MaintenanceStaffList.vue";
 
 const routes = [
   { path: "/", component: Redirector },
@@ -33,6 +34,7 @@ const routes = [
       { path: "bookings", component: BookingsList },
       { path: "events", component: EventsList },
       { path: "maintenance", component: MaintenanceList },
+      { path: "maintenance-staff", component: MaintenanceStaffList },
     ],
   },
   { path: "/form/:serviceId", name: "form", component: FormPage },

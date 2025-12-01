@@ -63,6 +63,11 @@
                     class="bg-secondary hover:bg-hovered-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
                     View Maintenance Requests
                 </button>
+                <button v-if="readOnlyFields.length > 0 && readOnlyFields.includes('ticketId')" type="button"
+                    @click="showMaintenanceStatusModal = true"
+                    class="bg-secondary hover:bg-hovered-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
+                    View Maintenance Status
+                </button>
             </div>
             <button type="submit"
                 class="bg-primary hover:bg-hovered-btn active:bg-clicked-btn text-white px-4 py-2 rounded-xl select-none transition-colors">
@@ -85,6 +90,10 @@
     <!-- Maintenance Modal -->
     <MaintenanceModal :is-open="showMaintenanceModal" :user-id="getUserId()" @close="showMaintenanceModal = false"
         @request-selected="onMaintenanceRequestSelected" />
+
+    <!-- Maintenance Status Modal -->
+    <MaintenanceStatusModal :is-open="showMaintenanceStatusModal" :user-id="getUserId()"
+        @close="showMaintenanceStatusModal = false" @request-selected="onMaintenanceStatusSelected" />
 </template>
 
 <script>
@@ -92,6 +101,7 @@ import ResponseModal from './ResponseModal.vue';
 import BookingsModal from './BookingsModal.vue';
 import EventsModal from './EventsModal.vue';
 import MaintenanceModal from './MaintenanceModal.vue';
+import MaintenanceStatusModal from './MaintenanceStatusModal.vue';
 
 export default {
     name: "FormBuilder",
@@ -115,7 +125,7 @@ export default {
             else if (f.type === "select") initial[f.key] = f.default ?? "";
             else initial[f.key] = f.default ?? "";
         });
-        return { form: initial, errors: {}, showModal: false, responseData: null, showBookingsModal: false, showEventsModal: false, showMaintenanceModal: false };
+        return { form: initial, errors: {}, showModal: false, responseData: null, showBookingsModal: false, showEventsModal: false, showMaintenanceModal: false, showMaintenanceStatusModal: false };
     },
     methods: {
         getUserId() {
@@ -213,13 +223,21 @@ export default {
             if (this.form.description !== undefined) {
                 this.form.description = request.description;
             }
+        },
+        onMaintenanceStatusSelected(request) {
+            // Auto-fill form with selected maintenance request data for status update
+            this.form.ticketId = request.requestId;
+            if (this.form.status !== undefined) {
+                this.form.status = request.status;
+            }
         }
     },
     components: {
         ResponseModal,
         BookingsModal,
         EventsModal,
-        MaintenanceModal
+        MaintenanceModal,
+        MaintenanceStatusModal
     }
 };
 </script>

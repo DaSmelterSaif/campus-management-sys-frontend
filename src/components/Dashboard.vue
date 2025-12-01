@@ -19,6 +19,11 @@
                 title="View Maintenance">
                 🔧
             </SidebarButton>
+            <SidebarButton v-if="role === 'maintenance'" @click="goToMaintenanceStaff"
+                class="bg-gray-600 cursor-pointer hover:bg-opacity-80 transition-all flex justify-center items-center text-4xl"
+                title="Maintenance Requests">
+                📋
+            </SidebarButton>
         </div>
         <div class="ml-28 p-8">
             <template v-if="!hasChildRoute">
@@ -46,6 +51,7 @@ import SidebarButton from './Dashboard_components/SidebarButton.vue';
 import ServiceCard from './Dashboard_components/ServiceCard.vue';
 import ChatbotWidget from './ChatbotWidget.vue';
 import MaintenanceList from './MaintenanceList.vue';
+import MaintenanceStaffList from './MaintenanceStaffList.vue';
 
 const IP_BY_ROLE = {
     student: [
@@ -205,6 +211,7 @@ export default {
         const role = localStorage.getItem('role') || "student";
         return {
             name: localStorage.getItem('name') || "John Doe",
+            role: role,
             services: IP_BY_ROLE[role],
         }
     },
@@ -225,13 +232,17 @@ export default {
         },
         goToMaintenance() {
             this.$router.push('/dashboard/maintenance');
+        },
+        goToMaintenanceStaff() {
+            this.$router.push('/dashboard/maintenance-staff');
         }
     },
     components: {
         SidebarButton,
         ServiceCard,
         ChatbotWidget,
-        MaintenanceList
+        MaintenanceList,
+        MaintenanceStaffList
     }
 }
 </script>

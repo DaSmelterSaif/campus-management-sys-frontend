@@ -202,13 +202,13 @@ export default {
                         {
                             key: "status", label: "Status", type: "select", required: true,
                             options: [
-                                { value: "open", label: "Open" },
-                                { value: "in_progress", label: "In Progress" },
-                                { value: "completed", label: "Completed" },
-                                { value: "closed", label: "Closed" }
+                                { value: "Open", label: "Open" },
+                                { value: "In Progress", label: "In Progress" },
+                                { value: "Completed", label: "Completed" },
+                                { value: "Closed", label: "Closed" }
                             ]
                         },
-                        { key: "updateNote", label: "Update Note", type: "textarea", placeholder: "What changed?" }
+                        { key: "comment", label: "Comment", type: "textarea", placeholder: "Optional comment", required: false }
                     ]
                 }
             }
@@ -245,6 +245,7 @@ export default {
                 7: ["requestId"],          // View Maintenance Status (student/admin)
                 9: ["bookingId", "roomId"],    // Approve/Reject Booking (admin)
                 11: ["bookingId", "roomId"],   // Cancel Booking (admin)
+                14: ["ticketId"],          // Update Maintenance Status (admin)
             };
             return readOnlyMap[serviceId] || [];
         },
