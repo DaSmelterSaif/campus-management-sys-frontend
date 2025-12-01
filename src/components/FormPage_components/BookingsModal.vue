@@ -94,9 +94,9 @@ export default {
             try {
                 let url;
                 if (this.fetchAllBookings) {
-                    url = `http://localhost:8080/getallbookings`;
+                    url = `${this.$API_BASE_URL}/getallbookings`;
                 } else {
-                    url = `http://localhost:8080/getbookings?userId=${this.userId}`;
+                    url = `${this.$API_BASE_URL}/getbookings?userId=${this.userId}`;
                 }
                 const response = await fetch(url);
                 const data = await response.json();

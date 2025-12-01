@@ -89,7 +89,7 @@ export default {
             this.loading = true;
             this.error = null;
             try {
-                const response = await fetch(`http://localhost:8080/getmaintenance?userId=${this.userId}`);
+                const response = await fetch(`${this.$API_BASE_URL}/getmaintenance?userId=${this.userId}`);
                 const data = await response.json();
 
                 if (!response.ok) {

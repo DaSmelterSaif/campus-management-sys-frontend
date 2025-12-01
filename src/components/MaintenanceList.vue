@@ -90,7 +90,7 @@ export default {
                     throw new Error('User ID not found. Please log in again.');
                 }
 
-                const response = await fetch(`http://localhost:8080/getmaintenance?userId=${userId}`);
+                const response = await fetch(`${this.$API_BASE_URL}/getmaintenance?userId=${userId}`);
                 const data = await response.json();
 
                 if (!response.ok) {

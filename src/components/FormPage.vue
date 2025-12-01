@@ -18,7 +18,7 @@ export default {
         const BACKEND_IP_BY_SERVICE_ID = {
             1: {
                 name: "Room Booking",
-                ip: "http://localhost:8080/bookroom",
+                ip: this.$API_BASE_URL + "/bookroom",
                 schema: {
                     fields: [
                         { key: "userId", label: "User ID", type: "text", placeholder: "For demonstration", required: true },
@@ -32,7 +32,7 @@ export default {
 
             2: {
                 name: "Schedule Events",
-                ip: "http://localhost:8080/scheduleevents",
+                ip: this.$API_BASE_URL + "/scheduleevents",
                 schema: {
                     fields: [
                         { key: "userId", label: "User ID", type: "text", required: true },
@@ -48,7 +48,7 @@ export default {
 
             3: {
                 name: "Register/Dismiss Event",
-                ip: "http://localhost:8080/registerevent",
+                ip: this.$API_BASE_URL + "/registerevent",
                 schema: {
                     fields: [
                         { key: "userId", label: "User ID", type: "text", required: true },
@@ -67,7 +67,7 @@ export default {
 
             4: {
                 name: "Cancel Event",
-                ip: "http://localhost:8080/cancelevent",
+                ip: this.$API_BASE_URL + "/cancelevent",
                 schema: {
                     fields: [
                         { key: "eventId", label: "Event ID", type: "text", required: true },
@@ -78,7 +78,7 @@ export default {
 
             5: {
                 name: "Cancel Booking",
-                ip: "http://localhost:8080/cancelbooking",
+                ip: this.$API_BASE_URL + "/cancelbooking",
                 schema: {
                     fields: [
                         { key: "bookingId", label: "Booking ID", type: "text", required: true },
@@ -90,7 +90,7 @@ export default {
 
             6: {
                 name: "Submit Maintenance Request",
-                ip: "http://localhost:8080/maintenancerequest",
+                ip: this.$API_BASE_URL + "/maintenancerequest",
                 schema: {
                     fields: [
                         { key: "userId", label: "User ID", type: "text", required: true },
@@ -113,7 +113,7 @@ export default {
 
             7: {
                 name: "View Maintenance Status",
-                ip: "http://localhost:8080/viewmaintenance",
+                ip: this.$API_BASE_URL + "/viewmaintenance",
                 schema: {
                     fields: [
                         { key: "requestId", label: "Request ID", type: "text", required: true }
@@ -123,7 +123,7 @@ export default {
 
             8: {
                 name: "Ask Chatbot",
-                ip: "http://localhost:8080/askchatbot",
+                ip: this.$API_BASE_URL + "/askchatbot",
                 schema: {
                     fields: [
                         {
@@ -142,7 +142,7 @@ export default {
 
             9: {
                 name: "Approve/Reject Booking",
-                ip: "http://localhost:8080/approverejectbooking",
+                ip: this.$API_BASE_URL + "/approverejectbooking",
                 schema: {
                     fields: [
                         { key: "bookingId", label: "Booking ID", type: "text", required: true },
@@ -163,7 +163,7 @@ export default {
 
             12: {
                 name: "View Student Feedback",
-                ip: "http://localhost:8080/getstudentfeedback",
+                ip: this.$API_BASE_URL + "/getstudentfeedback",
                 schema: {
                     fields: [
                         { key: "keyword", label: "Keyword", type: "text", placeholder: "Filter by word/phrase" },
@@ -175,7 +175,7 @@ export default {
 
             13: {
                 name: "Summarize Student Feedback",
-                ip: "http://localhost:8080/summarizestudentfeedback",
+                ip: this.$API_BASE_URL + "/summarizestudentfeedback",
                 schema: {
                     fields: [
                         { key: "fromDate", label: "From Date", type: "date" },
@@ -195,7 +195,7 @@ export default {
 
             14: {
                 name: "Update Maintenance Status",
-                ip: "http://localhost:8080/updatemaintenancestatus",
+                ip: this.$API_BASE_URL + "/updatemaintenancestatus",
                 schema: {
                     fields: [
                         { key: "ticketId", label: "Ticket ID", type: "text", required: true },

@@ -102,7 +102,7 @@ export default {
                 const userType = localStorage.getItem('role') || 'student';
 
                 // Send to chatbot endpoint
-                const response = await fetch("http://localhost:8080/askchatbot", {
+                const response = await fetch(`${this.$API_BASE_URL}/askchatbot`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
