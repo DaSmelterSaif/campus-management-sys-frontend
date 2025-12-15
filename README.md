@@ -22,48 +22,16 @@ git --version
 
 ## Setup
 
-### 1. Clone the Repository
-
-To run this project on your system, open up a terminal and clone it to a
-directory of your choice:
-
-**Windows:**
-
-```bash
-cd C:\your\path\here
-```
-
-**macOS/Linux:**
-
-```bash
-cd ~/your/path/here
-```
-
-Clone repo here:
-
-```bash
-git clone https://github.com/DaSmelterSaif/campus-management-sys-frontend.git
-cd campus-management-sys-frontend
-```
-
-### 2. Install Dependencies
+Install Dependencies:
 
 ```bash
 npm install
 ```
 
-### 3. Run Development Server
+Run the dev server:
 
 ```bash
 npm run dev
-```
-
-## Get Updates
-
-To get the latest updates whenever I make a commit, run:
-
-```bash
-git pull
 ```
 
 ## How to Use
