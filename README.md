@@ -2,6 +2,8 @@
 
 A Vue.js-based frontend application for the Campus Management System.
 
+Refer to the [backend repository](https://github.com/DaSmelterSaif/campus-management-sys-backend?tab=readme-ov-file#endpoints).
+
 ## Prerequisites
 
 Before running this project, ensure you have the following installed:
