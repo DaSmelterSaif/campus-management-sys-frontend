@@ -142,6 +142,11 @@ along with their corresponding services and backend routes:
   Backend Route: '/updatemaintenancestatus'  
   Role:
 
+## Disclaimer
+
+- Generative AI may have been used to generate the code
+  partially (to meet project's tight deadlines).
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0 (GPLv3).  
