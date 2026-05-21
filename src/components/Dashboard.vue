@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 min-h-screen">
+    <div class="relative bg-gray-100 min-h-screen">
         <div class="w-28 h-screen fixed top-0 left-0 bg-gray-700">
             <SidebarButton @click="goToHome"
                 class="bg-primary flex justify-center items-center cursor-pointer hover:bg-opacity-80 transition-all">
